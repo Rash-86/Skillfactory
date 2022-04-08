@@ -7,7 +7,7 @@ from config import Convertor
 class APIException(Exception):
     pass
 
-TOKEN = '5164645255:AAF2rSk6Kkx9Xvn2ZRKN5kHfyoMQBg6UAWk'
+TOKEN = ''
 exchanges = {
     'доллар': 'USD',
     'евро': 'EUR',

@@ -1,0 +1,72 @@
+User1 = User.objects.create_user('Дорофеев Петр Александрович')
+User2 = User.objects.create_user(username='Савелий',last_name='Леркин')
+
+
+Author.objects.create(authorUser=User1)
+Author.objects.create(authorUser=User2)
+
+
+Category.objects.create(name='Интернет')
+Category.objects.create(name='Спорт')
+Category.objects.create(name='Экономика')
+Category.objects.create(name='Культура')
+
+
+author1 = Author.objects.get(id=1)
+
+
+Post.objects.create(author=author1, categoryType='NW',  title='РОССИЙСКИХ ТЯЖЕЛОАТЛЕТОВ ОТСТРАНИЛИ',text='Тяжелоатлеты из России временно отстранены за нарушения антидопинговых правил, совершенные в 2012-2013 годах. В списке попавших под санкции –Александр Иванов, Дмитрий Клоков, Светлана Царукаева, Наталья Заболотная, Ольга Зубова и Апти Аухадов. Кроме того, дисквалифицирован Феликс Халибеков' )
+
+Post.objects.create(author=author1, categoryType='AR',  title='Погружаемся в работу со скроллом в Jetpack Compose',text='В этой статье я хочу поделиться опытом работы со скроллом в приложении, написанном на Jetpack Compose.')
+
+Post.objects.create(author=author1, categoryType='AR',  title='Обеспечение качества мобильной разработки в hh.ru',text='Не знаю, о чем разговаривают разработчики между собой на конференциях, но у QA-инженеров только и разговоров, что о процессах. Как устроено тестирование, сколько автотестов, кто и когда их пишет')
+
+Post.objects.create(author=Author.objects.get(id=2), categoryType='NW', title='Путь от ручного управления к автоматизации', text='Доклад генерального директора группы компаний «РАДИУС Автоматика» Давыденко Юрия Николаевича об автоматизации планирования и управления производством был представлен на Бизнес-форуме 1C 2021, по мотивам этого доклада и подготовлена настоящая публикация.')
+
+
+
+Post.objects.get(id=1).postCategory.add(Category.objects.get(name='Спорт'))
+Post.objects.get(id=1).postCategory.add(Category.objects.get(name='Культура'))
+Post.objects.get(id=2).postCategory.add(Category.objects.get(name='Интернет'))
+Post.objects.get(id=2).postCategory.add(Category.objects.get(name='Экономика'))
+Post.objects.get(id=3).postCategory.add(Category.objects.get(name='Интернет'))
+Post.objects.get(id=3).postCategory.add(Category.objects.get(name='Культура'))
+Post.objects.get(id=3).postCategory.add(Category.objects.get(name='Экономика'))
+Post.objects.get(id=4).postCategory.add(Category.objects.get(name='Интернет'))
+
+
+Comment.objects.create(commentPost=Post.objects.get(id=1), commentUser=Author.objects.get(id=2).authorUser, text='Дискриминация по национальности')
+Comment.objects.create(commentPost=Post.objects.get(id=2), commentUser=Author.objects.get(id=2).authorUser, text='Зачем тестировщики мержат в девелоп?')
+Comment.objects.create(commentPost=Post.objects.get(id=2), commentUser=Author.objects.get(id=2).authorUser, text='А с конфликтами как справляются?')
+Comment.objects.create(commentPost=Post.objects.get(id=3), commentUser=Author.objects.get(id=1).authorUser, text='Интересная статья. Всегда был некий интерес к этой теме — хорошо узнать взгляд «изнутри».')
+
+
+Post.objects.get(id=2).like()
+Comment.objects.get(id=1).like()
+Post.objects.get(id=2).dislike()
+
+
+Author.objects.get(id=2).update_rating()
+Author.objects.get(id=1).update_rating()
+
+
+x = Author.objects.order_by('-ratingAuthor')[0]
+x.ratingAuthor
+x.authorUser.username
+
+
+c = Post.objects.filter(categoryType='AR').order_by('-rating')[:1]
+for i in c:
+	i.dateCreation.strftime("%Y-%m-%d %H:%M:%S")
+	i.author.authorUser.username
+	i.rating
+	i.title
+	i.preview()
+
+
+b=c[0].comment_set.all()
+for i in a:
+	i.dateCreation.strftime("%Y-%m-%d %H:%M:%S")
+	i.commentUser.username
+	i.rating
+	i.text
